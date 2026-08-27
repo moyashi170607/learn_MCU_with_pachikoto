@@ -1,0 +1,26 @@
+{
+  // 会話パート用のスニペット。prefix を打って Tab で展開される。
+  // scope は tinymist / Typst LSP の言語 ID。
+  "パチ言のセリフ": {
+    "scope": "typst,typst-code",
+    "prefix": "p",
+    "body": "#パチ言[$1]",
+    "description": "パチ言のセリフ"
+  },
+  "パチケモのセリフ": {
+    "scope": "typst,typst-code",
+    "prefix": "k",
+    "body": "#パチケモ[$1]",
+    "description": "パチケモのセリフ"
+  },
+  "会話ブロック": {
+    "scope": "typst,typst-code",
+    "prefix": "talk",
+    "body": [
+      "#talk[",
+      "$1",
+      "]",
+    ],
+    "description": "#talk[…] の会話ブロック"
+  }
+}
