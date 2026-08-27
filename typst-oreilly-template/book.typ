@@ -1,6 +1,5 @@
-// typst-oreilly-template (Copyright (c) 2025 NISHIZAWA Shuntaro, MIT License) を改変
+// typst-oreilly-template (Copyright (c) 2025 NISHIZAWA Shuntaro, MIT License) を改変　こつ子
 // 原文ライセンス: ./LICENSE
-// 改変点: 章見出しの奇数ページ強制改ページを無効化 (L120)　こつ子
 
 #let layout(
   body,
@@ -109,7 +108,8 @@
     leading: 0.8em,
     justify: true,
     linebreaks: auto,
-    first-line-indent: 1em,
+    // 和文組版では見出し・図表直後の段落も字下げするので all: true
+    first-line-indent: (amount: 1em, all: true),
   )
 
   // 見出しのナンバリングとフォントを設定
@@ -254,14 +254,6 @@
     } else {
       it
     }
-  }
-
-  // 見出しや図表の後の段落が字下げされない問題を修正
-  // 空の段落を入れる
-  show selector(heading).or(figure): it => {
-    it
-    par(text(size: 0pt, ""))
-    v(-1em)
   }
 
   // 目次のスタイル設定
