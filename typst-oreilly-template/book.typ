@@ -1,3 +1,7 @@
+// typst-oreilly-template (Copyright (c) 2025 NISHIZAWA Shuntaro, MIT License) を改変
+// 原文ライセンス: ./LICENSE
+// 改変点: 章見出しの奇数ページ強制改ページを無効化 (L120)　こつ子
+
 #let layout(
   body,
   title: [],
@@ -24,8 +28,12 @@
     header: context {
       set text(font: fonts.sans-serif, size: 8pt)
 
-      let current-chapter = query(heading.where(level: 1)).filter(it => it.location().page() <= here().page()).at(-1, default: none)
-      let current-section = query(heading.where(level: 2)).filter(it => it.location().page() <= here().page()).at(-1, default: none)
+      let current-chapter = query(heading.where(level: 1))
+        .filter(it => it.location().page() <= here().page())
+        .at(-1, default: none)
+      let current-section = query(heading.where(level: 2))
+        .filter(it => it.location().page() <= here().page())
+        .at(-1, default: none)
 
       block(
         width: 100%,
@@ -34,7 +42,7 @@
         ),
         inset: (
           bottom: 2pt,
-        )
+        ),
       )[
         #if calc.even(here().page()) {
           align(left)[
@@ -52,7 +60,7 @@
                   h(0.5em)
                 }
                 current-chapter.body
-              }
+              },
             )
           ]
         } else {
@@ -60,17 +68,16 @@
             #box(
               inset: (y: 2pt, right: 0.5em),
               // 章があるページではなく、節が現在の章と同じで、かつ節がある場合
-              if
-                current-chapter.location().page() != here().page() and
-                current-section != none and
-                counter(heading).at(current-chapter.location()).at(0) == counter(heading).at(current-section.location()).at(0)
-              {
+              if current-chapter.location().page() != here().page()
+                and current-section != none
+                and counter(heading).at(current-chapter.location()).at(0)
+                  == counter(heading).at(current-section.location()).at(0) {
                 if current-section.numbering != none {
                   numbering(current-section.numbering, ..counter(heading).at(current-section.location()))
                   h(0.5em)
                 }
                 current-section.body
-              }
+              },
             )
             #box(
               width: 2.5em,
@@ -89,7 +96,7 @@
   set text(
     lang: "ja",
     font: fonts.serif,
-    size: 9pt
+    size: 9pt,
   )
   show raw: set text(font: fonts.mono)
   show strong: set text(font: fonts.sans-serif)
@@ -114,7 +121,7 @@
     {
       // 空白ページは何も表示しない
       set page(header: {})
-      pagebreak(to: "odd", weak: true)
+      //pagebreak(to: "odd", weak: true)
     }
 
     // 図表番号をリセット
@@ -132,7 +139,7 @@
     if counter(heading).at(it.location()).at(0) != 0 {
       text(
         fill: luma(100),
-        numbering(heading.numbering, ..counter(heading).at(it.location())).trim()
+        numbering(heading.numbering, ..counter(heading).at(it.location())).trim(),
       )
     } else {
       // ナンバリングがない場合はダミーを入れる
@@ -200,7 +207,7 @@
         } else {
           0.3pt
         }
-      }
+      },
     ),
     fill: (x, y) => {
       if y == 0 {
@@ -214,7 +221,7 @@
     inset: (
       x: 5pt,
       y: 3pt,
-    )
+    ),
   )
   // 一番上のヘッダーは白文字
   show table.cell.where(y: 0): it => {
@@ -294,8 +301,7 @@
     grid(
       columns: (auto, 1fr),
       gutter: 1em,
-      numbering(sym.dagger + "1", ..counter(footnote).at(it.note.location())),
-      it.note.body
+      numbering(sym.dagger + "1", ..counter(footnote).at(it.note.location())), it.note.body,
     )
   }
 
