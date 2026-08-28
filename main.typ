@@ -18,3 +18,7 @@
 #include "intro/intro.typ"
 
 #include "overview/overview.typ"
+
+#include "enviroment/environment.typ"
+
+#include "enviroment/how_to_setup.typ"
