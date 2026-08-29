@@ -38,27 +38,52 @@ Arduino IDE 公式ダウンロードサイト https://www.arduino.cc/en/software
   ]
 ]
 
-画面の左側のタブ2番目にあるボタンから「BOARD MANAGER」を開き、検索窓に「RP2040」と入力してみましょう。検索結果を見て「Arduino Mbed OS R2040 Boards」をインストールします。
+今回はRaspberry Pi Pico用のプログラムとしてEarle F. Philhower, III氏の「Arduino-Pico」を用います。こちらは公式ではなくコミュニティで開発されているものですが、非常に有用で事実上の標準環境となっています。
+
+- Arduino-Picoのリポジトリ https://github.com/earlephilhower/arduino-pico
+
+それでは画面左上の「File > Preferences」からPreferencesを開きましょう。
 
 #figure(
-  caption: "RP2040で検索",
+  caption: "File > Preferences",
 )[
-  #image("img/board_manager.png")
+  #image("img/preferences.png")
 ]
+
+#figure(
+  caption: "Additional boards manager URLs",
+)[
+  #image("img/preferences2.png")
+]
+
+次に、その中にある「Additional boards manager URLs」を探し、その右側のボタンを押してください。
+そこにURLを入力することで、対応したボードの情報をIDEに追加することができます。
+今回は以下のURLを追加して「OK」を押してください。
+
+```
+https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
+```
+
+#figure(
+  caption: "ボードを追加",
+)[
+  #image("img/add_board.png")
+]
+
+追加できたら、左側のタブの2番目の「BOARD MANAGER」を押し、検索窓に「Raspberry Pi Pico/RP2040」と入力しましょう。
+正しく追加できていたら、「Raspberry Pi Pico/RP2040 by Earle F. Philhower, III」というものが表示されるはずです。
+出てきたら「Install」を押してインストールします。
+「Arduino Mbed OS RP2040 Boards」は別のものなので注意しましょう。
 
 #talk[
   #パチケモ[
-    そこそこ時間がかかるから、気長に待とうね。\
-    途中でドライバ等のインストールをするか訊かれた場合はそれもインストールしよう。\
-    Arduino Mbed OS R2040 BoardsのINSTALLだった部分がREMOVEになってたらインストール完了だよ。
+    そこそこ時間がかかるので、気長に待とうね。\
+    途中で要求されるドライバも忘れずインストールしてね
   ]
+  #パチ言[うお～！ワクワクしてきた～！]
 ]
 
-#figure(
-  caption: "インストール完了",
-)[
-  #image("img/installed.png")
-]
+インストールが無事完了したら「Install」だった場所が「Remove」になっているはずです。
 
 #talk[
   #パチケモ[これで環境構築は終了だよ。]
