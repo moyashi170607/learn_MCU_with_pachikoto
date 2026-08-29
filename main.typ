@@ -22,3 +22,5 @@
 #include "enviroment/environment.typ"
 
 #include "enviroment/how_to_setup.typ"
+
+#include "output/blink.typ"
