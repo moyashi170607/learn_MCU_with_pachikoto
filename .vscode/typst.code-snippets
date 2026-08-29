@@ -18,7 +18,7 @@
     "prefix": "talk",
     "body": [
       "#talk[",
-      "$1",
+      "$0",
       "]",
     ],
     "description": "#talk[…] の会話ブロック"
