@@ -34,11 +34,11 @@ Arduino IDE 公式ダウンロードサイト https://www.arduino.cc/en/software
   #パチ言[おーなんか凄そう。]
   #パチケモ[
     次はさっきも話したボードマネージャーだね。\
-    Pico用のプログラムをインストールしよう。
+    Pico用のArduinoコアをインストールしよう。
   ]
 ]
 
-今回はRaspberry Pi Pico用のプログラムとしてEarle F. Philhower, III氏の「Arduino-Pico」を用います。こちらは公式ではなくコミュニティで開発されているものですが、非常に有用で事実上の標準環境となっています。
+今回はRaspberry Pi Pico用のArduinoコアとしてEarle F. Philhower, III氏の「Arduino-Pico」を用います。こちらは公式ではなくコミュニティで開発されているものですが、非常に有用で事実上の標準環境となっています。
 
 - Arduino-Picoのリポジトリ https://github.com/earlephilhower/arduino-pico
 

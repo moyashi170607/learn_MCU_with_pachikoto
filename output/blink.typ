@@ -1,6 +1,7 @@
 #import "../chara.typ": *
 #import "@preview/simple-todo:0.1.0": list-todos, todo
 #import "@preview/showybox:2.0.4": showybox
+#import "@preview/codelst:2.0.2": sourcecode
 
 = GPIO出力
 
@@ -31,5 +32,95 @@
 
 Arduino IDEではプログラムは「Sketch」というファイルで管理されます。
 画面左上の「File > New Sketch」から新しいSketchを書き始めましょう。
+
+新しいウィンドウが開いたら、画面左上の「Select Board」を押し、「Select Other Board and Port」を選びましょう。
+
+開いたら検索窓「Raspberry Pi Pico」と入力し、「Raspberry Pi Pico - Raspberry Pi Pico/RP2040/RP2350」というものを選んでください。
+
+#figure(
+  caption: "Select Board",
+)[
+  #image("img/select_board.png")
+]
+
+#talk[
+  #パチケモ[これで、ボードを選択できたね。]
+  #パチ言[これでArudino IDEでPicoのファームウェアをようやく書くことができるわけだな]
+  #パチケモ[
+    新しいスケッチに始めから`setup`関数と`loop`関数があるよね。\
+    これは特別な役割を持つ関数なんだ。
+  ]
+]
+
+`setup`関数はマイコンが起動したときなど、プログラムが開始されたときに、まず最初に1度だけ実行される関数です。この関数の中では主に、マイコンやモジュールの初期化、ピンの設定を行います。
+
+一方で`loop`関数は`setup`関数が実行された後に、繰り返し実行される関数です。`loop`関数の処理が終わるとまた`loop`関数の始めに戻り実行されます。ここで、主にマイコンの制御プログラムを書いていくことになります。
+
+#talk[
+  #パチケモ[
+    つまり、`setup`関数で今回使うLEDにつながっているGPIOの設定をして、`loop`関数でうまくチカチカするようにすれば良いということだね。\
+    GPIOにはそれぞれ固有の番号が振られているんだ。\
+    その番号を使ってプログラミングから設定できるよ。
+  ]
+
+  #パチ言[
+    それで結局GPIOって何なの。
+  ]
+
+  #パチケモ[
+    GPIOは正式名称は「General Purpose Input/Output」、日本語では「汎用入出力」って言うんだ。\
+    マイコンから回路に電圧をかけたり、逆に回路の電圧を読み取ったりすることができるよ。\
+    今回みたいにLEDを光らせるのにも使うし、他にもブザーを鳴らしたり、ボタンが押されたことを検知したりするのにも使うんだ。\
+    GPIOは一部を除いて原則ユーザーが自由に使い方を決めることができるんだ。\
+    つまりGPIOは他の部品や回路とプログラムを結ぶ窓口なんだ。
+  ]
+
+  #パチ言[なるほどね。マイコンの主役ってわけだ。]
+
+  #パチケモ[これが純正のRaspberry Pi Picoのピン配置だよ]
+]
+
+#figure(
+  caption: "Raspberry Pi Picoのピン配置",
+)[
+  #image("img/rp_pin.png")
+]
+
+#talk[
+  #パチケモ[色々と書いていある中にの「GP」っていうのがGPIOのこと、その後に続く番号はそのGPIOに割り当てられている番号だね。]
+
+  #パチ言[あの、「LED（GP25）」ってなってるやつが、マイコンにあらかじめついているLEDで今回使うGPIOか？]
+
+  #パチケモ[
+    そう！勘がいいね。\
+    他にもいろいろピンごとに役割があるけど、それは後で説明するよ。\
+    今はLチカが先！
+  ]
+]
+
+では、GPIO25を使ってLチカをしていきましょう。
+
+まずはLEDを光らせる、つまりGPIOの電圧をマイコンが変更できる状態にする必要があります。
+そのためにはGPIOをOUTPUTモードします。
+
+Arduino APIではGPIOのモードの設定は`pinMode`関数で行います。
+
+
+#showybox()[
+  ```
+  pinMode( GPIOの番号 , モード);
+  ```
+]
+
+つまり今回の場合は`setup`関数で次のようにすればよいのです。
+
+#showybox()[
+  ```c
+  void setup(){
+    pinMode(25,OUTPUT);
+  }
+  ```
+]
+
 
 
