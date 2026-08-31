@@ -6,6 +6,9 @@
 = GPIO出力
 
 == Lチカ
+
+=== 概要
+
 #talk[
   #パチケモ[じゃぁついにマイコン入門の鉄板、「Lチカ」に挑戦しよう！]
   #パチ言[Lチカ is 何？]
@@ -30,6 +33,8 @@
   ]
 ]
 
+=== 新規Sketchの作成
+
 Arduino IDEではプログラムは「Sketch」というファイルで管理されます。
 画面左上の「File > New Sketch」から新しいSketchを書き始めましょう。
 
@@ -43,6 +48,8 @@ Arduino IDEではプログラムは「Sketch」というファイルで管理さ
   #image("img/select_board.png")
 ]
 
+=== setup関数とloop関数
+
 #talk[
   #パチケモ[これで、ボードを選択できたね。]
   #パチ言[これでArudino IDEでPicoのファームウェアをようやく書くことができるわけだな]
@@ -55,6 +62,8 @@ Arduino IDEではプログラムは「Sketch」というファイルで管理さ
 `setup`関数はマイコンが起動したときなど、プログラムが開始されたときに、まず最初に1度だけ実行される関数です。この関数の中では主に、マイコンやモジュールの初期化、ピンの設定を行います。
 
 一方で`loop`関数は`setup`関数が実行された後に、繰り返し実行される関数です。`loop`関数の処理が終わるとまた`loop`関数の始めに戻り実行されます。ここで、主にマイコンの制御プログラムを書いていくことになります。
+
+=== GPIO
 
 #talk[
   #パチケモ[
@@ -84,6 +93,12 @@ Arduino IDEではプログラムは「Sketch」というファイルで管理さ
   caption: "Raspberry Pi Picoのピン配置",
 )[
   #image("img/rp_pin.png")
+  #v(0.4em)
+  #text(size: 0.7em)[
+    出典: Raspberry Pi Ltd「Raspberry Pi Pico-series Microcontrollers」\
+    #link("https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html") \
+    #link("https://creativecommons.org/licenses/by-sa/4.0/")[CC BY-SA 4.0]
+  ]
 ]
 
 #talk[
@@ -98,6 +113,8 @@ Arduino IDEではプログラムは「Sketch」というファイルで管理さ
   ]
 ]
 
+=== ファームウェアの開発
+
 では、GPIO25を使ってLチカをしていきましょう。
 
 まずはLEDを光らせる、つまりGPIOの電圧をマイコンが変更できる状態にする必要があります。
@@ -107,7 +124,7 @@ Arduino APIではGPIOのモードの設定は`pinMode`関数で行います。
 
 
 #showybox()[
-  ```
+  ```c
   pinMode( GPIOの番号 , モード);
   ```
 ]
@@ -122,5 +139,91 @@ Arduino APIではGPIOのモードの設定は`pinMode`関数で行います。
   ```
 ]
 
+`pinMode`関数で`OUTPUT`モードにしたGPIOは`digitalWrite`関数で`HIGH`または`LOW`に電圧を設定することができます。
+`HIGH`に設定されたGPIOは約3.3Vを、`LOW`に設定されたGPIOは0Vを回路にかけます。
+つまり、`HIGH`をGPIO25に設定すればLEDが点灯し、`LOW`を設定すればLEDが消えます。
+
+`digitalWrite`関数の使い方は以下の通りです。
+
+#showybox()[
+  ```c
+  digitalWrite( GPIOの番号 , HIGH or LOW);
+  ```
+]
+
+また、`delay`関数は指定した時間、処理を待機させることができます。
+指定する時間はミリ秒単位である点に注意しましょう。
+
+#showybox()[
+  ```c
+  delay(待機する時間ミリ秒);
+  ```
+]
+
+これらを用いて、「HIGHのする #sym.arrow.r 1000ms待機 #sym.arrow.r LOWにする #sym.arrow.r 1000ms待機する」を繰り返せば、Lチカをすることができますね。
+
+というわけで、`loop`関数の中身は以下のようになります。
 
 
+#showybox()[
+  ```c
+  void loop(){
+    digitalWrite( 25 , HIGH);
+    delay(1000);
+    digitalWrite( 25, LOW);
+    delay(1000);
+  }
+  ```
+]
+
+Lチカ全体のコードは以下のようになります。
+
+#showybox()[
+  ```c
+  void setup(){
+    pinMode(25,OUTPUT);
+  }
+
+  void loop(){
+    digitalWrite( 25 , HIGH);
+    delay(1000);
+    digitalWrite( 25, LOW);
+    delay(1000);
+  }
+  ```
+]
+
+=== ファームウェアの書き込み
+
+#talk[
+  #パチケモ[
+    さぁファームウェアができたら、それをRaspberry Pi Picoに書き込もう。\
+    Picoについている「BOOTSELボタン」を押しながらUSBをPCにつなぐと、ファームウェアを書きこめるモードにすることができるよ。
+  ]
+
+  #パチ言[なんかUSBつないだ時みたいなの出てきたぞ]
+
+  #パチケモ[
+    BOOTSELモードでは、PicoがUSBのように振る舞うようになるんだ。\
+    この状態でファームウェアを直接放り込むことでも書き込めるけど、
+    今回はArduino IDEについている書き込み機能を使おう。\
+    Arduino IDE画面左上の右矢印みたいなアイコンのボタンを押すことで、プログラムのコンパイル、書き込みができるよ。
+  ]
+
+  #パチ言[
+    コンパイルって何？
+  ]
+
+  #パチケモ[
+    Arduino IDEではC言語を用いてファームウェアの開発をするんだけど、
+    C言語はそのままでは機械は理解できないんだ。\
+    機械が理解できる形式を機械語と言うよ。\
+    C言語から、より機械語に近い形であるアセンブリ言語に変換することをコンパイルというよ。\
+    今回みたいに、開発に使っている機械とは異なる機械に向けてコンパイルすることをクロスコンパイルとも言うね。\
+    そして、コンパイルしたものを機械が直接理解できる機械語にして、
+    実行できる一つのファイルにまとめるまでの一連の流れを「ビルド」と呼ぶんだ。
+    環境構築のときに出てきた言葉だね。
+  ]
+
+  #パチ言[はぇ～結構裏でIDEが色んなことしてくれてるんだね。]
+]
