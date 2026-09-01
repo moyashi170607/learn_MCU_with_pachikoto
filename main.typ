@@ -24,3 +24,5 @@
 #include "enviroment/how_to_setup.typ"
 
 #include "output/blink.typ"
+
+#include "output/ex_blink.typ"
